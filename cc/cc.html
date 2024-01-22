@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Clicker Game</title>
+  <style>
+
+    #adContainer {
+      width: 50%;
+      height: 300px;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc; /* 枠線を追加 */
+    }
+
+    body {
+      display: flex;
+      justify-content: space-around;
+    }
+    
+    #gameContainer {
+      background-color: black;
+      flex: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;  /* this will take up the full height of the viewport */
+    }
+
+    #score {
+      color: white;
+      font-size: 36px;
+    }
+    #scorePerSecond {
+      color: white;
+      font-size: 24px;
+    }
+
+    
+    #buildingContainer {
+      flex: 50%;
+    }
+
+    #clickButton {
+      /* Existing properties, except those related to the background */
+      position: relative; /* Ensure the pseudo-element positions relative to this button */
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      font-size: 14px;
+      border: 2px solid #000000; 
+      color: black;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      transition-duration: 0.4s;
+      overflow: hidden; /* Added to hide overflow from the pseudo-element */
+      animation: pulse 3s infinite;
+
+      background: transparent;
+      border: none;
+      color: transparent;
+    }
+
+    #clickButton::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-image: url('earth.jpg');
+      background-color: black; 
+      background-size: cover; /* Adjust to make sure the image always covers the button */
+      background-position: center;
+      z-index: -1; /* Make sure the pseudo-element is beneath the actual button */
+      transition-duration: 0.4s;
+      animation: pulse 3s infinite;
+    }
+
+    #clickButton:hover {
+      //background-color: #45a049;
+      background-color: black;
+    }
+
+    .building {
+      margin-top: 10px;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    #scoreDisplay {
+      position: absolute;
+      color: white;
+      font-size: 48px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .building button {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .building {
+      width: 350px
+    }
+    
+    .purchase-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 60px;  
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;  
+      color: white; 
+      font-size: 24px; 
+      cursor: pointer;
+    }
+    
+    .button-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+    
+    .button-left {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .building-name {
+      font-weight: bold;
+    }
+    
+    .required-score {
+      font-size: 12px;  /* 必要に応じて調整 */
+    }
+    
+    .button-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ownership-number {
+      font-size: 30px;  /* 必要に応じて調整 */
+    }
+
+    .popup {
+      display: none;
+      position: fixed; 
+      bottom: 0;
+      left: 10%;
+      width: 30%;  /* updated this line */
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      padding: 20px;
+      z-index: 9999; 
+    }
+
+
+    #autoClickerButton {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="doubleFirstPopup01" class="popup" onclick="doubleClicker('doubleFirstPopup01')">人類のあけぼの(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup02" class="popup" onclick="doubleClicker('doubleFirstPopup02')">集団の形成(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup03" class="popup" onclick="doubleClicker('doubleFirstPopup03')">石器の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup04" class="popup" onclick="doubleClicker('doubleFirstPopup04')">農耕の開始(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup05" class="popup" onclick="doubleClicker('doubleFirstPopup05')">宗教の発生(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup06" class="popup" onclick="doubleClicker('doubleFirstPopup06')">0の発見(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup07" class="popup" onclick="doubleClicker('doubleFirstPopup07')">競争社会のはじまり(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup08" class="popup" onclick="doubleClicker('doubleFirstPopup08')">地動説の提唱(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup09" class="popup" onclick="doubleClicker('doubleFirstPopup09')">武力集団の形成(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup10" class="popup" onclick="doubleClicker('doubleFirstPopup10')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup11" class="popup" onclick="doubleClicker('doubleFirstPopup11')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup12" class="popup" onclick="doubleClicker('doubleFirstPopup12')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup13" class="popup" onclick="doubleClicker('doubleFirstPopup13')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup14" class="popup" onclick="doubleClicker('doubleFirstPopup14')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup15" class="popup" onclick="doubleClicker('doubleFirstPopup15')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup16" class="popup" onclick="doubleClicker('doubleFirstPopup16')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup17" class="popup" onclick="doubleClicker('doubleFirstPopup17')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup18" class="popup" onclick="doubleClicker('doubleFirstPopup18')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup19" class="popup" onclick="doubleClicker('doubleFirstPopup19')">紙の発明(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup20" class="popup" onclick="doubleClicker('doubleFirstPopup20')">紙の発明(人類の生産力が2倍)</div>
+
+  <div id="doubleNextPopup01" class="popup" onclick="doubleNext('doubleNextPopup01')">洞窟生活からの脱却(村の生産力が2倍)</div>
+  <div id="doubleNextPopup02" class="popup" onclick="doubleNext('doubleNextPopup02')">木造の家(村の生産力が2倍)</div>
+  <div id="doubleNextPopup03" class="popup" onclick="doubleNext('doubleNextPopup03')">石造りの家(村の生産力が2倍)</div>
+  <div id="doubleNextPopup04" class="popup" onclick="doubleNext('doubleNextPopup04')">豪農の出現(村の生産力が2倍)</div>
+  <div id="doubleNextPopup05" class="popup" onclick="doubleNext('doubleNextPopup05')">畜産農家の出現(村の生産力が2倍)</div>
+  <div id="doubleNextPopup06" class="popup" onclick="doubleNext('doubleNextPopup06')">村を挙げての祭り(村の生産力が2倍)</div>
+  <div id="doubleNextPopup07" class="popup" onclick="doubleNext('doubleNextPopup07')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup08" class="popup" onclick="doubleNext('doubleNextPopup08')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup09" class="popup" onclick="doubleNext('doubleNextPopup09')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup10" class="popup" onclick="doubleNext('doubleNextPopup10')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup11" class="popup" onclick="doubleNext('doubleNextPopup11')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup12" class="popup" onclick="doubleNext('doubleNextPopup12')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup13" class="popup" onclick="doubleNext('doubleNextPopup13')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup14" class="popup" onclick="doubleNext('doubleNextPopup14')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup15" class="popup" onclick="doubleNext('doubleNextPopup15')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup16" class="popup" onclick="doubleNext('doubleNextPopup16')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup17" class="popup" onclick="doubleNext('doubleNextPopup17')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup18" class="popup" onclick="doubleNext('doubleNextPopup18')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup19" class="popup" onclick="doubleNext('doubleNextPopup19')">特産物の外販(村の生産力が2倍)</div>
+  <div id="doubleNextPopup20" class="popup" onclick="doubleNext('doubleNextPopup20')">特産物の外販(村の生産力が2倍)</div>
+
+  <div id="doubleThirdPopup01" class="popup" onclick="doubleThird('doubleThirdPopup01')">商業の活性化(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup02" class="popup" onclick="doubleThird('doubleThirdPopup02')">学校の設置(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup03" class="popup" onclick="doubleThird('doubleThirdPopup03')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup04" class="popup" onclick="doubleThird('doubleThirdPopup04')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup05" class="popup" onclick="doubleThird('doubleThirdPopup05')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup06" class="popup" onclick="doubleThird('doubleThirdPopup06')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup07" class="popup" onclick="doubleThird('doubleThirdPopup07')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup08" class="popup" onclick="doubleThird('doubleThirdPopup08')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup09" class="popup" onclick="doubleThird('doubleThirdPopup09')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup10" class="popup" onclick="doubleThird('doubleThirdPopup10')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup11" class="popup" onclick="doubleThird('doubleThirdPopup11')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup12" class="popup" onclick="doubleThird('doubleThirdPopup12')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup13" class="popup" onclick="doubleThird('doubleThirdPopup13')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup14" class="popup" onclick="doubleThird('doubleThirdPopup14')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup15" class="popup" onclick="doubleThird('doubleThirdPopup15')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup16" class="popup" onclick="doubleThird('doubleThirdPopup16')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup17" class="popup" onclick="doubleThird('doubleThirdPopup17')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup18" class="popup" onclick="doubleThird('doubleThirdPopup18')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup19" class="popup" onclick="doubleThird('doubleThirdPopup19')">物資の集中(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup20" class="popup" onclick="doubleThird('doubleThirdPopup20')">物資の集中(街の生産力が2倍)</div>
+
+  <div id="doubleFourthPopup01" class="popup" onclick="doubleFourth('doubleFourthPopup01')">身分制度の始まり(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup02" class="popup" onclick="doubleFourth('doubleFourthPopup02')">高等学校の設置(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup03" class="popup" onclick="doubleFourth('doubleFourthPopup03')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup04" class="popup" onclick="doubleFourth('doubleFourthPopup04')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup05" class="popup" onclick="doubleFourth('doubleFourthPopup05')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup06" class="popup" onclick="doubleFourth('doubleFourthPopup06')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup07" class="popup" onclick="doubleFourth('doubleFourthPopup07')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup08" class="popup" onclick="doubleFourth('doubleFourthPopup08')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup09" class="popup" onclick="doubleFourth('doubleFourthPopup09')">富裕層の出現(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup10" class="popup" onclick="doubleFourth('doubleFourthPopup10')">富裕層の出現(都市の生産力が2倍)</div>
+
+  <div id="doubleFifthPopup01" class="popup" onclick="doubleFifth('doubleFifthPopup01')">律令制度の始まり(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup02" class="popup" onclick="doubleFifth('doubleFifthPopup02')">律令制度の始まり(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup03" class="popup" onclick="doubleFifth('doubleFifthPopup03')">治水工事の施工(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup04" class="popup" onclick="doubleFifth('doubleFifthPopup04')">治水工事の施工(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup05" class="popup" onclick="doubleFifth('doubleFifthPopup05')">治水工事の施工(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup06" class="popup" onclick="doubleFifth('doubleFifthPopup06')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup07" class="popup" onclick="doubleFifth('doubleFifthPopup07')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup08" class="popup" onclick="doubleFifth('doubleFifthPopup08')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup09" class="popup" onclick="doubleFifth('doubleFifthPopup09')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup10" class="popup" onclick="doubleFifth('doubleFifthPopup10')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
+
+
+  <div id="gameContainer">
+    <h1 id="score">0</h1>
+    <h2 id="scorePerSecond">0</h2>
+    <button id="clickButton" onclick="incrementScore()">
+      <span id="scoreDisplay" style="visibility: hidden;"></span>
+    </button>
+  </div>
+
+  <div id="buildingContainer">
+
+  <div id="adContainer">
+    <p>ここに広告を表示予定</p>
+  </div>
+
+  <div class="building">
+    <h2>生産設備</h2>
+    <button class="purchase-button" onclick="buyClicker()">
+      <div class="button-content">
+        <div class="button-left">
+          <span class="building-name">人類</span>
+          <span class="required-score">追加コスト <span id="clickerCost">1</span></span>
+        </div>
+        <div class="button-right">
+          <span class="ownership-number" id="clickersOwned">0</span>
+        </div>
+      </div>
+    </button>
+    <button id="autoClickerButton" onclick="toggleAutoClicker()">人類を自動クリック</button>
+  </div>
+  
+  <div class="building">
+    <button class="purchase-button" onclick="buyNext()">
+      <div class="button-content">
+        <div class="button-left">
+          <span class="building-name">村</span>
+          <span class="required-score">追加コスト <span id="nextCost">1万</span></span>
+        </div>
+        <div class="button-right">
+          <span class="ownership-number" id="nextsOwned">0</span>
+        </div>
+      </div>
+    </button>
+  </div>
+  
+  <div id="thirdBuilding" class="building" style="display: none;">
+    <button class="purchase-button" onclick="buyThird()">
+      <div class="button-content">
+        <div class="button-left">
+          <span class="building-name">街</span>
+          <span class="required-score">追加コスト <span id="thirdCost">10万</span></span>
+        </div>
+        <div class="button-right">
+          <span class="ownership-number" id="thirdOwned">0</span>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <div id="fourthBuilding" class="building" style="display: none;">
+    <button class="purchase-button" onclick="buyFourth()">
+      <div class="button-content">
+        <div class="button-left">
+          <span class="building-name">都市</span>
+          <span class="required-score">追加コスト <span id="fourthCost">100万</span></span>
+        </div>
+        <div class="button-right">
+          <span class="ownership-number" id="fourthOwned">0</span>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <div id="fifthBuilding" class="building" style="display: none;">
+    <button class="purchase-button" onclick="buyFifth()">
+      <div class="button-content">
+        <div class="button-left">
+          <span class="building-name">国家</span>
+          <span class="required-score">追加コスト <span id="fifthCost">1億</span></span>
+        </div>
+        <div class="button-right">
+          <span class="ownership-number" id="fifthOwned">0</span>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  </div>
+
+  <script>
+    // 数調に変換する関数
+    function formatScore(score) {
+        if (typeof score !== 'number' || score < 0 || isNaN(score)) {
+            return 'Invalid score';
+        }
+        const units = ['','万','億','兆','京','垓','ジョ','穣','溝','澗','正','載','極','恒河沙','阿僧祇','那由他','不可思議','無量大数'];
+        let unitIndex = 0;
+        while (score >= 10000) {
+            score /= 10000;
+            unitIndex++;
+        }
+
+        // toFixedメソッドを用いて小数点以下2桁まで表示
+        score = Number(score.toFixed(2));
+
+        return score.toString() + units[unitIndex];
+    }
+
+    var score = 0;
+    var clickersOwned = 0;
+    var nextsOwned = 0;
+    var thirdOwned = 0;
+    var fourthOwned = 0;
+    var fifthOwned = 0;
+
+    var clickerCost = 1;
+    var nextCost = 10000;
+    var thirdCost  = 100000;
+    var fourthCost = 1000000;
+    var fifthCost  = 100000000;
+
+    var perPower = 0.3 //全てのビルディングに掛ける変数
+
+    var clickerMultiplier = 1;
+    var doubleFirstPopupShown01 = false;
+    var doubleFirstPopupShown02 = false;
+    var doubleFirstPopupShown03 = false;
+    var doubleFirstPopupShown04 = false;
+    var doubleFirstPopupShown05 = false;
+    var doubleFirstPopupShown06 = false;
+    var doubleFirstPopupShown07 = false;
+    var doubleFirstPopupShown08 = false;
+    var doubleFirstPopupShown09 = false;
+    var doubleFirstPopupShown10 = false;
+    var doubleFirstPopupShown11 = false;
+    var doubleFirstPopupShown12 = false;
+    var doubleFirstPopupShown13 = false;
+    var doubleFirstPopupShown14 = false;
+    var doubleFirstPopupShown15 = false;
+    var doubleFirstPopupShown16 = false;
+    var doubleFirstPopupShown17 = false;
+    var doubleFirstPopupShown18 = false;
+    var doubleFirstPopupShown19 = false;
+    var doubleFirstPopupShown20 = false;
+
+    var nextMultiplier = 1;
+    var doubleNextPopupShown01 = false;
+    var doubleNextPopupShown02 = false;
+    var doubleNextPopupShown03 = false;
+    var doubleNextPopupShown04 = false;
+    var doubleNextPopupShown05 = false;
+    var doubleNextPopupShown06 = false;
+    var doubleNextPopupShown07 = false;
+    var doubleNextPopupShown08 = false;
+    var doubleNextPopupShown09 = false;
+    var doubleNextPopupShown10 = false;
+    var doubleNextPopupShown11 = false;
+    var doubleNextPopupShown12 = false;
+    var doubleNextPopupShown13 = false;
+    var doubleNextPopupShown14 = false;
+    var doubleNextPopupShown15 = false;
+    var doubleNextPopupShown16 = false;
+    var doubleNextPopupShown17 = false;
+    var doubleNextPopupShown18 = false;
+    var doubleNextPopupShown19 = false;
+    var doubleNextPopupShown20 = false;
+
+    var thirdMultiplier = 1;
+    var doubleThirdPopupShown01 = false;
+    var doubleThirdPopupShown02 = false;
+    var doubleThirdPopupShown03 = false;
+    var doubleThirdPopupShown04 = false;
+    var doubleThirdPopupShown05 = false;
+    var doubleThirdPopupShown06 = false;
+    var doubleThirdPopupShown07 = false;
+    var doubleThirdPopupShown08 = false;
+    var doubleThirdPopupShown09 = false;
+    var doubleThirdPopupShown10 = false;
+    var doubleThirdPopupShown11 = false;
+    var doubleThirdPopupShown12 = false;
+    var doubleThirdPopupShown13 = false;
+    var doubleThirdPopupShown14 = false;
+    var doubleThirdPopupShown15 = false;
+    var doubleThirdPopupShown16 = false;
+    var doubleThirdPopupShown17 = false;
+    var doubleThirdPopupShown18 = false;
+    var doubleThirdPopupShown19 = false;
+    var doubleThirdPopupShown20 = false;
+
+    var fourthMultiplier = 1;
+    var doubleFourthPopupShown01 = false;
+    var doubleFourthPopupShown02 = false;
+    var doubleFourthPopupShown03 = false;
+    var doubleFourthPopupShown04 = false;
+    var doubleFourthPopupShown05 = false;
+    var doubleFourthPopupShown06 = false;
+    var doubleFourthPopupShown07 = false;
+    var doubleFourthPopupShown08 = false;
+    var doubleFourthPopupShown09 = false;
+    var doubleFourthPopupShown10 = false;
+
+    var fifthMultiplier = 1;
+    var doubleFifthPopupShown01 = false;
+    var doubleFifthPopupShown02 = false;
+    var doubleFifthPopupShown03 = false;
+    var doubleFifthPopupShown04 = false;
+    var doubleFifthPopupShown05 = false;
+    var doubleFifthPopupShown06 = false;
+    var doubleFifthPopupShown07 = false;
+    var doubleFifthPopupShown08 = false;
+    var doubleFifthPopupShown09 = false;
+    var doubleFifthPopupShown10 = false;
+
+
+    // 地球をクリックしたときにスコアを獲得
+    function incrementScore() {
+      score += 1 + clickersOwned * clickerMultiplier;
+      score += nextsOwned * 1000 * nextMultiplier * 0.1;
+      score += thirdOwned * 100000 * thirdMultiplier * 0.1;
+      score += fourthOwned * 1000000 * fourthMultiplier * 0.1;
+      score += fifthOwned * 100000000 * fifthMultiplier * 0.1;
+
+      document.getElementById("score").innerText = formatScore(score);
+
+      var scoreDisplay = document.getElementById("scoreDisplay");
+      scoreDisplay.innerText = "+" + formatScore(1 + 1.5 * clickersOwned * clickerMultiplier * perPower + nextsOwned * 10000 * nextMultiplier * perPower + thirdOwned * 100000 * thirdMultiplier * perPower + fourthOwned * 1000000 * fourthMultiplier * perPower + fifthOwned * 10000000 * fifthMultiplier * perPower);
+      scoreDisplay.style.visibility = 'visible';
+
+      setTimeout(function() {
+        scoreDisplay.style.visibility = 'hidden';
+      }, 500);
+
+    }
+
+    //人類の実績解除
+    function doubleClicker(tgtdiv) {
+      clickerMultiplier *= 2;
+      document.getElementById(`${tgtdiv}`).style.display = 'none';
+    }
+
+    //村の実績解除
+    function doubleNext(tgtdiv) {
+      nextMultiplier *= 2;
+      clickerMultiplier *= 1.1;
+      document.getElementById(`${tgtdiv}`).style.display = 'none';
+    }
+
+    //街の実績解除
+    function doubleThird(tgtdiv) {
+      thirdMultiplier *= 2;
+      clickerMultiplier *= 1.1;
+      nextMultiplier *= 1.1;
+      document.getElementById(`${tgtdiv}`).style.display = 'none';
+    }
+
+    //都市の実績解除
+    function doubleFourth(tgtdiv) {
+      fourthMultiplier *= 2;
+      clickerMultiplier *= 1.5;
+      nextMultiplier *= 1.5;
+      thirdMultiplier *= 1.05;
+      document.getElementById(`${tgtdiv}`).style.display = 'none';
+    }
+
+    //国家の実績解除
+    function doubleFifth(tgtdiv) {
+      fifthMultiplier *= 4;
+      clickerMultiplier *= 1.5;
+      nextMultiplier *= 1.5;
+      thirdMultiplier *= 1.5;
+      fourthMultiplier *= 1.5;
+      document.getElementById(`${tgtdiv}`).style.display = 'none';
+    }
+
+
+
+    //各ビルディングをクリックしたときの処理
+    function buyClicker() {
+      if (score >= clickerCost) {
+        score -= clickerCost;
+        clickersOwned++;
+        clickerCost = Math.ceil(clickerCost * 1.00001);
+        document.getElementById("clickersOwned").innerText = clickersOwned;
+        document.getElementById("clickerCost").innerText = formatScore(clickerCost);
+        document.getElementById("score").innerText = formatScore(score);
+    
+        checkAndDisplayPopup(clickersOwned);
+      }
+    }
+    
+    function checkAndDisplayPopup(clickers) {
+      const milestones = [10, 50, 100, 500, 1000, 5000, 10000, 15000, 20000, 25000,  30000, 35000, 40000, 45000, 50000, 55000];
+      const popups = ['doubleFirstPopup01', 'doubleFirstPopup02', 'doubleFirstPopup03', 
+                      'doubleFirstPopup04', 'doubleFirstPopup05', 'doubleFirstPopup06', 
+                      'doubleFirstPopup07', 'doubleFirstPopup08', 'doubleFirstPopup09', 
+                      'doubleFirstPopup10', 'doubleFirstPopup11', 'doubleFirstPopup12', 
+                      'doubleFirstPopup13', 'doubleFirstPopup14', 'doubleFirstPopup15', 
+                      'doubleFirstPopup16'];
+    
+      for (let i = 0; i < milestones.length; i++) {
+        if (clickers == milestones[i] && !window['doubleFirstPopupShown' + String(i + 1).padStart(2, '0')]) {
+          document.getElementById(popups[i]).style.display = 'block';
+          window['doubleFirstPopupShown' + String(i + 1).padStart(2, '0')] = true;
+        }
+      }
+    }
+
+    function buyNext() {
+      if (score >= nextCost) {
+        score -= nextCost;
+        nextsOwned++;
+        nextCost = Math.ceil(nextCost * 1.01);
+        document.getElementById("nextsOwned").innerText = nextsOwned;
+        document.getElementById("nextCost").innerText = formatScore(nextCost);
+        document.getElementById("score").innerText = formatScore(score);
+    
+        checkAndDisplayPopupNext(nextsOwned);
+      }
+    }
+    
+    function checkAndDisplayPopupNext(clickers) {
+      const milestones = [10, 30, 50, 100, 150, 200, 250, 500, 700, 1000, 1500, 2000, 3000, 3500, 4000];
+      const popups = ['doubleNextPopup01', 'doubleNextPopup02', 'doubleNextPopup03', 
+                      'doubleNextPopup04', 'doubleNextPopup05', 'doubleNextPopup06', 
+                      'doubleNextPopup07', 'doubleNextPopup08', 'doubleNextPopup09', 
+                      'doubleNextPopup10', 'doubleNextPopup11', 'doubleNextPopup12', 
+                      'doubleNextPopup13'];
+    
+      for (let i = 0; i < milestones.length; i++) {
+        if (clickers == milestones[i] && !window['doubleNextPopupShown' + String(i + 1).padStart(2, '0')]) {
+          document.getElementById(popups[i]).style.display = 'block';
+          window['doubleNextPopupShown' + String(i + 1).padStart(2, '0')] = true;
+        }
+      }
+    }
+
+
+    function buyThird() {
+      if (score >= thirdCost) {
+        score -= thirdCost;
+        thirdOwned++;
+        thirdCost = Math.ceil(thirdCost * 1.02);
+        document.getElementById("thirdOwned").innerText = thirdOwned;
+        document.getElementById("thirdCost").innerText = formatScore(thirdCost);
+        document.getElementById("score").innerText = formatScore(score);
+    
+        checkAndDisplayPopupThird(thirdOwned);
+      }
+    }
+    
+    function checkAndDisplayPopupThird(clickers) {
+      const milestones = [10, 30, 50, 100, 150, 200, 250, 500, 1000, 1500, 2000, 3000, 4000, 5500];
+      const popups = ['doubleThirdPopup01', 'doubleThirdPopup02', 'doubleThirdPopup03', 
+                      'doubleThirdPopup04', 'doubleThirdPopup05', 'doubleThirdPopup06', 
+                      'doubleThirdPopup07', 'doubleThirdPopup08', 'doubleThirdPopup09', 
+                      'doubleThirdPopup10', 'doubleThirdPopup11', 'doubleThirdPopup12', 
+                      'doubleThirdPopup13'];
+    
+      for (let i = 0; i < milestones.length; i++) {
+        if (clickers == milestones[i] && !window['doubleThirdPopupShown' + String(i + 1).padStart(2, '0')]) {
+          document.getElementById(popups[i]).style.display = 'block';
+          window['doubleThirdPopupShown' + String(i + 1).padStart(2, '0')] = true;
+        }
+      }
+    }
+
+    function buyFourth() {
+      if (score >= fourthCost) {
+        score -= fourthCost;
+        fourthOwned++;
+        fourthCost = Math.ceil(fourthCost * 1.25);
+        document.getElementById("fourthOwned").innerText = fourthOwned;
+        document.getElementById("fourthCost").innerText = formatScore(fourthCost);
+        document.getElementById("score").innerText = formatScore(score)
+    
+        checkAndDisplayPopupFourth(fourthOwned);
+      }
+    }
+    
+    function checkAndDisplayPopupFourth(clickers) {
+      const milestones = [10, 30, 50, 100, 150, 200, 250, 500, 1000, 1500, 2000];
+      const popups = ['doubleFourthPopup01', 'doubleFourthPopup02', 'doubleFourthPopup03', 
+                      'doubleFourthPopup04', 'doubleFourthPopup05', 'doubleFourthPopup06', 
+                      'doubleFourthPopup07', 'doubleFourthPopup08', 'doubleFourthPopup09', 
+                      'doubleFourthPopup10'];
+    
+      for (let i = 0; i < milestones.length; i++) {
+        if (clickers == milestones[i] && !window['doubleFourthPopupShown' + String(i + 1).padStart(2, '0')]) {
+          document.getElementById(popups[i]).style.display = 'block';
+          window['doubleFourthPopupShown' + String(i + 1).padStart(2, '0')] = true;
+        }
+      }
+    }
+
+
+    function buyFifth() {
+      if (score >= fifthCost) {
+        score -= fifthCost;
+        fifthOwned++;
+        fifthCost = Math.ceil(fifthCost * 1.32);
+        document.getElementById("fifthOwned").innerText = fifthOwned;
+        document.getElementById("fifthCost").innerText = formatScore(fifthCost);
+        document.getElementById("score").innerText = formatScore(score)
+    
+        checkAndDisplayPopupFifth(fifthOwned);
+      }
+    }
+    
+    function checkAndDisplayPopupFifth(clickers) {
+      const milestones = [10, 30, 50, 100, 150, 200, 250, 500, 1000, 1500, 2000];
+      const popups = ['doubleFifthPopup01', 'doubleFifthPopup02', 'doubleFifthPopup03', 
+                      'doubleFifthPopup04', 'doubleFifthPopup05', 'doubleFifthPopup06', 
+                      'doubleFifthPopup07', 'doubleFifthPopup08', 'doubleFifthPopup09', 
+                      'doubleFifthPopup10'];
+    
+      for (let i = 0; i < milestones.length; i++) {
+        if (clickers == milestones[i] && !window['doubleFifthPopupShown' + String(i + 1).padStart(2, '0')]) {
+          document.getElementById(popups[i]).style.display = 'block';
+          window['doubleFifthPopupShown' + String(i + 1).padStart(2, '0')] = true;
+        }
+      }
+    }
+
+
+    // Increase score by the number of 'next' buildings every second
+    setInterval(function() {
+      score += clickersOwned * 1.5;
+      score += nextsOwned * 10;
+      score += thirdOwned * 10000;
+      score += fourthOwned * 1000000;
+      score += fifthOwned * 10000000;
+
+      var scorePerSecond = clickersOwned * 1 * clickerMultiplier +
+                           nextsOwned * 10000 * nextMultiplier +
+                           thirdOwned * 100000 * thirdMultiplier +
+                           fourthOwned * 1000000 * fourthMultiplier +
+                           fifthOwned * 100000000 * fifthMultiplier;
+
+      score += scorePerSecond;
+      document.getElementById("score").innerText = formatScore(score);
+      document.getElementById("scorePerSecond").innerText = '生産力/秒: ' + formatScore(scorePerSecond);
+
+
+      if (score >= 100000 && document.getElementById("thirdBuilding").style.display == "none") {
+        document.getElementById("thirdBuilding").style.display = "block";
+      }
+      if (score >= 1000000 && document.getElementById("fourthBuilding").style.display == "none") {
+        document.getElementById("fourthBuilding").style.display = "block";
+      }
+      if (score >= 10000000 && document.getElementById("fifthBuilding").style.display == "none") {
+        document.getElementById("fifthBuilding").style.display = "block";
+      }
+
+
+
+    }, 1000);
+
+
+    //人類を自動クリックする処理
+    var autoClickerInterval;
+    var isAutoClickerActive = false;
+
+    function toggleAutoClicker() {
+      if (!isAutoClickerActive) {
+        autoClickerInterval = setInterval(function() {
+          buyClicker();
+        }, 1);
+        document.getElementById("autoClickerButton").innerText = "自動クリック停止";
+        isAutoClickerActive = true;
+      } else {
+        clearInterval(autoClickerInterval);
+        document.getElementById("autoClickerButton").innerText = "人類を自動クリック";
+        isAutoClickerActive = false;
+      }
+    }
+
+
+  </script>
+
+</body>
+</html>
