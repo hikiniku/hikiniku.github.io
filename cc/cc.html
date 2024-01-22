@@ -15,6 +15,28 @@
       border: 1px solid #ccc; /* 枠線を追加 */
     }
 
+    #adContainer2 {
+      width: 100%;
+      height: 20px;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc; /* 枠線を追加 */
+    }
+
+    #adContainer3 {
+      width: 50%;
+      height: 200px;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc; /* 枠線を追加 */
+    }
+
     body {
       display: flex;
       justify-content: space-around;
@@ -46,7 +68,7 @@
 
     #clickButton {
       /* Existing properties, except those related to the background */
-      position: relative; /* Ensure the pseudo-element positions relative to this button */
+      position: relative;
       width: 300px;
       height: 300px;
       border-radius: 50%;
@@ -57,7 +79,7 @@
       text-decoration: none;
       display: inline-block;
       transition-duration: 0.4s;
-      overflow: hidden; /* Added to hide overflow from the pseudo-element */
+      overflow: hidden;
       animation: pulse 3s infinite;
 
       background: transparent;
@@ -74,19 +96,19 @@
       left: 0;
       background-image: url('earth.jpg');
       background-color: black; 
-      background-size: cover; /* Adjust to make sure the image always covers the button */
+      background-size: cover;
       background-position: center;
-      z-index: -1; /* Make sure the pseudo-element is beneath the actual button */
+      z-index: -1;
       transition-duration: 0.4s;
       animation: pulse 3s infinite;
     }
 
     #clickButton:hover {
-      //background-color: #45a049;
       background-color: black;
     }
 
     .building {
+      width: 50%;
       margin-top: 10px;
     }
 
@@ -115,10 +137,6 @@
       width: 100%;
       height: 100%;
       box-sizing: border-box;
-    }
-
-    .building {
-      width: 350px
     }
     
     .purchase-button {
@@ -193,6 +211,7 @@
   </style>
 </head>
 <body>
+
 
   <div id="doubleFirstPopup01" class="popup" onclick="doubleClicker('doubleFirstPopup01')">人類のあけぼの(人類の生産力が2倍)</div>
   <div id="doubleFirstPopup02" class="popup" onclick="doubleClicker('doubleFirstPopup02')">集団の形成(人類の生産力が2倍)</div>
@@ -295,6 +314,7 @@
   </div>
 
   <div class="building">
+    <button onclick="saveGame()">状態をセーブ</button>
     <h2>生産設備</h2>
     <button class="purchase-button" onclick="buyClicker()">
       <div class="button-content">
@@ -308,6 +328,9 @@
       </div>
     </button>
     <button id="autoClickerButton" onclick="toggleAutoClicker()">人類を自動クリック</button>
+    <div id="adContainer2">
+      <p>ここに広告を表示予定</p>
+    </div>
   </div>
   
   <div class="building">
@@ -366,9 +389,32 @@
     </button>
   </div>
 
+  <div id="adContainer3">
+    <p>ここに広告を表示予定</p>
+  </div>
+
   </div>
 
   <script>
+
+    //ロード処理
+    window.onload = function() {
+      loadGame();
+    }
+
+    function updateDisplay() {
+      document.getElementById("score").innerText = formatScore(score);
+      document.getElementById("clickersOwned").innerText = clickersOwned;
+      // Update other display elements as needed
+    }
+
+    window.onload = function() {
+      loadGame();
+      updateDisplay();
+    }
+
+
+
     // 数調に変換する関数
     function formatScore(score) {
         if (typeof score !== 'number' || score < 0 || isNaN(score)) {
@@ -755,6 +801,54 @@
       }
     }
 
+
+    //セーブ処理
+    function saveGame() {
+      const gameState = {
+        score: score,
+        clickersOwned: clickersOwned,
+        nextsOwned: nextsOwned,
+        thirdOwned: thirdOwned,
+        fourthOwned: fourthOwned,
+        fifthOwned: fifthOwned,
+        clickerCost: clickerCost,
+        nextCost: nextCost,
+        thirdCost: thirdCost,
+        fourthCost: fourthCost,
+        fifthCost: fifthCost,
+        // Add other variables as needed
+      };
+      document.cookie = "gameState=" + JSON.stringify(gameState) + ";max-age=86400;path=/";
+    }
+
+    //ロード処理
+    function getCookie(name) {
+      let cookies = document.cookie.split('; ');
+      for (let cookie of cookies) {
+        let parts = cookie.split('=');
+        if (parts[0] === name) return parts[1];
+      }
+      return null;
+    }
+
+    function loadGame() {
+      let gameState = getCookie("gameState");
+      if (gameState) {
+        gameState = JSON.parse(gameState);
+        score = gameState.score;
+        clickersOwned = gameState.clickersOwned;
+        nextsOwned = gameState.nextsOwned;
+        thirdOwned = gameState.thirdOwned;
+        fourthOwned = gameState.fourthOwned;
+        fifthOwned = gameState.fifthOwned;
+        clickerCost = gameState.clickerCost;
+        nextCost = gameState.nextCost;
+        thirdCost = gameState.thirdCost;
+        fourthCost = gameState.fourthCost;
+        fifthCost = gameState.fifthCost;
+        // Load other variables as needed
+      }
+    }
 
   </script>
 
