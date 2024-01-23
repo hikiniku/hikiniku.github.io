@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Simple Clicker Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <style>
 
     #adContainer {
@@ -200,19 +201,23 @@
     }
 
     .popup {
-      display: none;
-      position: fixed; 
-      bottom: 0;
-      left: 10%;
-      width: 30%;
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      cursor: pointer;
-      padding: 20px;
-      z-index: 9999; 
+        display: none;
+        /* position: fixed; */
+        top: 50%;
+        left: 50%;
+        width: 30%;
+        background-color: rgba(76, 175, 80, 0.8);
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        font-size: 24px;
+        padding: 25px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        animation: fadeIn 0.3s;
     }
-
 
     #autoClickerButton {
       margin-top: 10px;
@@ -224,98 +229,102 @@
       cursor: pointer;
     }
 
+    button {
+          touch-action: manipulation; /* Add this line */
+    }
+
   </style>
 </head>
 <body>
 
-
-  <div id="doubleFirstPopup01" class="popup" onclick="doubleClicker('doubleFirstPopup01')">人類のあけぼの(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup02" class="popup" onclick="doubleClicker('doubleFirstPopup02')">集団の形成(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup03" class="popup" onclick="doubleClicker('doubleFirstPopup03')">石器の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup04" class="popup" onclick="doubleClicker('doubleFirstPopup04')">農耕の開始(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup05" class="popup" onclick="doubleClicker('doubleFirstPopup05')">宗教の発生(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup06" class="popup" onclick="doubleClicker('doubleFirstPopup06')">0の発見(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup07" class="popup" onclick="doubleClicker('doubleFirstPopup07')">競争社会のはじまり(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup08" class="popup" onclick="doubleClicker('doubleFirstPopup08')">地動説の提唱(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup09" class="popup" onclick="doubleClicker('doubleFirstPopup09')">武力集団の形成(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup10" class="popup" onclick="doubleClicker('doubleFirstPopup10')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup11" class="popup" onclick="doubleClicker('doubleFirstPopup11')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup12" class="popup" onclick="doubleClicker('doubleFirstPopup12')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup13" class="popup" onclick="doubleClicker('doubleFirstPopup13')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup14" class="popup" onclick="doubleClicker('doubleFirstPopup14')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup15" class="popup" onclick="doubleClicker('doubleFirstPopup15')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup16" class="popup" onclick="doubleClicker('doubleFirstPopup16')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup17" class="popup" onclick="doubleClicker('doubleFirstPopup17')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup18" class="popup" onclick="doubleClicker('doubleFirstPopup18')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup19" class="popup" onclick="doubleClicker('doubleFirstPopup19')">紙の発明(人類の生産力が2倍)</div>
-  <div id="doubleFirstPopup20" class="popup" onclick="doubleClicker('doubleFirstPopup20')">紙の発明(人類の生産力が2倍)</div>
-
-  <div id="doubleNextPopup01" class="popup" onclick="doubleNext('doubleNextPopup01')">洞窟生活からの脱却(村の生産力が2倍)</div>
-  <div id="doubleNextPopup02" class="popup" onclick="doubleNext('doubleNextPopup02')">木造の家(村の生産力が2倍)</div>
-  <div id="doubleNextPopup03" class="popup" onclick="doubleNext('doubleNextPopup03')">石造りの家(村の生産力が2倍)</div>
-  <div id="doubleNextPopup04" class="popup" onclick="doubleNext('doubleNextPopup04')">豪農の出現(村の生産力が2倍)</div>
-  <div id="doubleNextPopup05" class="popup" onclick="doubleNext('doubleNextPopup05')">畜産農家の出現(村の生産力が2倍)</div>
-  <div id="doubleNextPopup06" class="popup" onclick="doubleNext('doubleNextPopup06')">村を挙げての祭り(村の生産力が2倍)</div>
-  <div id="doubleNextPopup07" class="popup" onclick="doubleNext('doubleNextPopup07')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup08" class="popup" onclick="doubleNext('doubleNextPopup08')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup09" class="popup" onclick="doubleNext('doubleNextPopup09')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup10" class="popup" onclick="doubleNext('doubleNextPopup10')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup11" class="popup" onclick="doubleNext('doubleNextPopup11')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup12" class="popup" onclick="doubleNext('doubleNextPopup12')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup13" class="popup" onclick="doubleNext('doubleNextPopup13')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup14" class="popup" onclick="doubleNext('doubleNextPopup14')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup15" class="popup" onclick="doubleNext('doubleNextPopup15')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup16" class="popup" onclick="doubleNext('doubleNextPopup16')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup17" class="popup" onclick="doubleNext('doubleNextPopup17')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup18" class="popup" onclick="doubleNext('doubleNextPopup18')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup19" class="popup" onclick="doubleNext('doubleNextPopup19')">特産物の外販(村の生産力が2倍)</div>
-  <div id="doubleNextPopup20" class="popup" onclick="doubleNext('doubleNextPopup20')">特産物の外販(村の生産力が2倍)</div>
-
-  <div id="doubleThirdPopup01" class="popup" onclick="doubleThird('doubleThirdPopup01')">商業の活性化(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup02" class="popup" onclick="doubleThird('doubleThirdPopup02')">学校の設置(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup03" class="popup" onclick="doubleThird('doubleThirdPopup03')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup04" class="popup" onclick="doubleThird('doubleThirdPopup04')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup05" class="popup" onclick="doubleThird('doubleThirdPopup05')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup06" class="popup" onclick="doubleThird('doubleThirdPopup06')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup07" class="popup" onclick="doubleThird('doubleThirdPopup07')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup08" class="popup" onclick="doubleThird('doubleThirdPopup08')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup09" class="popup" onclick="doubleThird('doubleThirdPopup09')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup10" class="popup" onclick="doubleThird('doubleThirdPopup10')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup11" class="popup" onclick="doubleThird('doubleThirdPopup11')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup12" class="popup" onclick="doubleThird('doubleThirdPopup12')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup13" class="popup" onclick="doubleThird('doubleThirdPopup13')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup14" class="popup" onclick="doubleThird('doubleThirdPopup14')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup15" class="popup" onclick="doubleThird('doubleThirdPopup15')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup16" class="popup" onclick="doubleThird('doubleThirdPopup16')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup17" class="popup" onclick="doubleThird('doubleThirdPopup17')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup18" class="popup" onclick="doubleThird('doubleThirdPopup18')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup19" class="popup" onclick="doubleThird('doubleThirdPopup19')">物資の集中(街の生産力が2倍)</div>
-  <div id="doubleThirdPopup20" class="popup" onclick="doubleThird('doubleThirdPopup20')">物資の集中(街の生産力が2倍)</div>
-
-  <div id="doubleFourthPopup01" class="popup" onclick="doubleFourth('doubleFourthPopup01')">身分制度の始まり(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup02" class="popup" onclick="doubleFourth('doubleFourthPopup02')">高等学校の設置(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup03" class="popup" onclick="doubleFourth('doubleFourthPopup03')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup04" class="popup" onclick="doubleFourth('doubleFourthPopup04')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup05" class="popup" onclick="doubleFourth('doubleFourthPopup05')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup06" class="popup" onclick="doubleFourth('doubleFourthPopup06')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup07" class="popup" onclick="doubleFourth('doubleFourthPopup07')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup08" class="popup" onclick="doubleFourth('doubleFourthPopup08')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup09" class="popup" onclick="doubleFourth('doubleFourthPopup09')">富裕層の出現(都市の生産力が2倍)</div>
-  <div id="doubleFourthPopup10" class="popup" onclick="doubleFourth('doubleFourthPopup10')">富裕層の出現(都市の生産力が2倍)</div>
-
-  <div id="doubleFifthPopup01" class="popup" onclick="doubleFifth('doubleFifthPopup01')">律令制度の始まり(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup02" class="popup" onclick="doubleFifth('doubleFifthPopup02')">律令制度の始まり(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup03" class="popup" onclick="doubleFifth('doubleFifthPopup03')">治水工事の施工(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup04" class="popup" onclick="doubleFifth('doubleFifthPopup04')">治水工事の施工(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup05" class="popup" onclick="doubleFifth('doubleFifthPopup05')">治水工事の施工(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup06" class="popup" onclick="doubleFifth('doubleFifthPopup06')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup07" class="popup" onclick="doubleFifth('doubleFifthPopup07')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup08" class="popup" onclick="doubleFifth('doubleFifthPopup08')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup09" class="popup" onclick="doubleFifth('doubleFifthPopup09')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
-  <div id="doubleFifthPopup10" class="popup" onclick="doubleFifth('doubleFifthPopup10')">ハーバー・ボッシュ法の発見(国家の生産力が4倍)</div>
-
-
   <div id="gameContainer">
+
+  <div id="doubleFirstPopup01" class="popup" onclick="doubleClicker('doubleFirstPopup01')">人類のあけぼの<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup02" class="popup" onclick="doubleClicker('doubleFirstPopup02')">集団の形成<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup03" class="popup" onclick="doubleClicker('doubleFirstPopup03')">石器の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup04" class="popup" onclick="doubleClicker('doubleFirstPopup04')">農耕の開始<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup05" class="popup" onclick="doubleClicker('doubleFirstPopup05')">宗教の発生<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup06" class="popup" onclick="doubleClicker('doubleFirstPopup06')">0の発見<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup07" class="popup" onclick="doubleClicker('doubleFirstPopup07')">競争社会のはじまり<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup08" class="popup" onclick="doubleClicker('doubleFirstPopup08')">地動説の提唱<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup09" class="popup" onclick="doubleClicker('doubleFirstPopup09')">武力集団の形成<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup10" class="popup" onclick="doubleClicker('doubleFirstPopup10')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup11" class="popup" onclick="doubleClicker('doubleFirstPopup11')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup12" class="popup" onclick="doubleClicker('doubleFirstPopup12')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup13" class="popup" onclick="doubleClicker('doubleFirstPopup13')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup14" class="popup" onclick="doubleClicker('doubleFirstPopup14')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup15" class="popup" onclick="doubleClicker('doubleFirstPopup15')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup16" class="popup" onclick="doubleClicker('doubleFirstPopup16')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup17" class="popup" onclick="doubleClicker('doubleFirstPopup17')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup18" class="popup" onclick="doubleClicker('doubleFirstPopup18')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup19" class="popup" onclick="doubleClicker('doubleFirstPopup19')">紙の発明<br>(人類の生産力が2倍)</div>
+  <div id="doubleFirstPopup20" class="popup" onclick="doubleClicker('doubleFirstPopup20')">紙の発明<br>(人類の生産力が2倍)</div>
+
+  <div id="doubleNextPopup01" class="popup" onclick="doubleNext('doubleNextPopup01')">洞窟生活からの脱却<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup02" class="popup" onclick="doubleNext('doubleNextPopup02')">木造の家<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup03" class="popup" onclick="doubleNext('doubleNextPopup03')">石造りの家<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup04" class="popup" onclick="doubleNext('doubleNextPopup04')">豪農の出現<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup05" class="popup" onclick="doubleNext('doubleNextPopup05')">畜産農家の出現<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup06" class="popup" onclick="doubleNext('doubleNextPopup06')">村を挙げての祭り<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup07" class="popup" onclick="doubleNext('doubleNextPopup07')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup08" class="popup" onclick="doubleNext('doubleNextPopup08')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup09" class="popup" onclick="doubleNext('doubleNextPopup09')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup10" class="popup" onclick="doubleNext('doubleNextPopup10')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup11" class="popup" onclick="doubleNext('doubleNextPopup11')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup12" class="popup" onclick="doubleNext('doubleNextPopup12')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup13" class="popup" onclick="doubleNext('doubleNextPopup13')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup14" class="popup" onclick="doubleNext('doubleNextPopup14')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup15" class="popup" onclick="doubleNext('doubleNextPopup15')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup16" class="popup" onclick="doubleNext('doubleNextPopup16')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup17" class="popup" onclick="doubleNext('doubleNextPopup17')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup18" class="popup" onclick="doubleNext('doubleNextPopup18')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup19" class="popup" onclick="doubleNext('doubleNextPopup19')">特産物の外販<br>(村の生産力が2倍)</div>
+  <div id="doubleNextPopup20" class="popup" onclick="doubleNext('doubleNextPopup20')">特産物の外販<br>(村の生産力が2倍)</div>
+
+  <div id="doubleThirdPopup01" class="popup" onclick="doubleThird('doubleThirdPopup01')">商業の活性化<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup02" class="popup" onclick="doubleThird('doubleThirdPopup02')">学校の設置<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup03" class="popup" onclick="doubleThird('doubleThirdPopup03')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup04" class="popup" onclick="doubleThird('doubleThirdPopup04')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup05" class="popup" onclick="doubleThird('doubleThirdPopup05')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup06" class="popup" onclick="doubleThird('doubleThirdPopup06')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup07" class="popup" onclick="doubleThird('doubleThirdPopup07')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup08" class="popup" onclick="doubleThird('doubleThirdPopup08')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup09" class="popup" onclick="doubleThird('doubleThirdPopup09')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup10" class="popup" onclick="doubleThird('doubleThirdPopup10')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup11" class="popup" onclick="doubleThird('doubleThirdPopup11')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup12" class="popup" onclick="doubleThird('doubleThirdPopup12')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup13" class="popup" onclick="doubleThird('doubleThirdPopup13')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup14" class="popup" onclick="doubleThird('doubleThirdPopup14')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup15" class="popup" onclick="doubleThird('doubleThirdPopup15')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup16" class="popup" onclick="doubleThird('doubleThirdPopup16')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup17" class="popup" onclick="doubleThird('doubleThirdPopup17')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup18" class="popup" onclick="doubleThird('doubleThirdPopup18')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup19" class="popup" onclick="doubleThird('doubleThirdPopup19')">物資の集中<br>(街の生産力が2倍)</div>
+  <div id="doubleThirdPopup20" class="popup" onclick="doubleThird('doubleThirdPopup20')">物資の集中<br>(街の生産力が2倍)</div>
+
+  <div id="doubleFourthPopup01" class="popup" onclick="doubleFourth('doubleFourthPopup01')">身分制度の始まり<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup02" class="popup" onclick="doubleFourth('doubleFourthPopup02')">高等学校の設置<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup03" class="popup" onclick="doubleFourth('doubleFourthPopup03')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup04" class="popup" onclick="doubleFourth('doubleFourthPopup04')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup05" class="popup" onclick="doubleFourth('doubleFourthPopup05')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup06" class="popup" onclick="doubleFourth('doubleFourthPopup06')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup07" class="popup" onclick="doubleFourth('doubleFourthPopup07')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup08" class="popup" onclick="doubleFourth('doubleFourthPopup08')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup09" class="popup" onclick="doubleFourth('doubleFourthPopup09')">富裕層の出現<br>(都市の生産力が2倍)</div>
+  <div id="doubleFourthPopup10" class="popup" onclick="doubleFourth('doubleFourthPopup10')">富裕層の出現<br>(都市の生産力が2倍)</div>
+
+  <div id="doubleFifthPopup01" class="popup" onclick="doubleFifth('doubleFifthPopup01')">律令制度の始まり<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup02" class="popup" onclick="doubleFifth('doubleFifthPopup02')">律令制度の始まり<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup03" class="popup" onclick="doubleFifth('doubleFifthPopup03')">治水工事の施工<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup04" class="popup" onclick="doubleFifth('doubleFifthPopup04')">治水工事の施工<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup05" class="popup" onclick="doubleFifth('doubleFifthPopup05')">治水工事の施工<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup06" class="popup" onclick="doubleFifth('doubleFifthPopup06')">ハーバー・ボッシュ法の発見<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup07" class="popup" onclick="doubleFifth('doubleFifthPopup07')">ハーバー・ボッシュ法の発見<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup08" class="popup" onclick="doubleFifth('doubleFifthPopup08')">ハーバー・ボッシュ法の発見<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup09" class="popup" onclick="doubleFifth('doubleFifthPopup09')">ハーバー・ボッシュ法の発見<br>(国家の生産力が4倍)</div>
+  <div id="doubleFifthPopup10" class="popup" onclick="doubleFifth('doubleFifthPopup10')">ハーバー・ボッシュ法の発見<br>(国家の生産力が4倍)</div>
+
+
     <h1 id="score">0</h1>
     <h2 id="scorePerSecond">0</h2>
     <button id="clickButton" onclick="incrementScore()">
@@ -842,7 +851,7 @@
 
         // Add other variables as needed
       };
-      document.cookie = "gameState=" + JSON.stringify(gameState) + ";max-age=86400;path=/";
+      document.cookie = "gameState=" + JSON.stringify(gameState) + ";max-age=2147483647;path=/";
     }
 
     //ロード処理
